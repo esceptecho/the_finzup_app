@@ -94,4 +94,31 @@ class Transaction {
       'date': date.toIso8601String(),
     };
   }
+
+  factory Transaction.fromMap(Map<String, dynamic> map) {
+    return Transaction(
+      description: map['description'],
+      amount: map['amount'],
+      category: Category(
+        name: map['category']['name'],
+        type: TransactionType.values.firstWhere((e) => e.toString() == map['category']['type']),
+        subCategory: _parseSubCategory(map['category']['type'], map['category']['subCategory']),
+        iconCodePoint: map['category']['iconCodePoint'],
+      ),
+      icon: IconData(map['category']['iconCodePoint'], fontFamily: 'MaterialIcons'),
+      attachments: List<String>.from(map['attachments']),
+      date: DateTime.parse(map['date']),
+    );
+  }
+  
+  // Método privado para convertir el subCategory de String a Enum
+  static Enum _parseSubCategory(String typeStr, String subCatStr) {
+    if (typeStr == 'TransactionType.income') {
+      return IncomeSubCategory.values.firstWhere((e) => e.toString() == subCatStr);
+    } else if (typeStr == 'TransactionType.expense') {
+      return ExpenseSubCategory.values.firstWhere((e) => e.toString() == subCatStr);
+    } else {
+      throw Exception('Unknown transaction type: $typeStr');
+    }
+  }
 }

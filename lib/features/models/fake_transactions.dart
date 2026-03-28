@@ -5,6 +5,7 @@ final List<Transaction> mockTransactions = [
   Transaction(
     description: 'Sueldo Febrero',
     amount: 2500.00,
+    icon: Icons.payments, // Icono derivado de la categoría
     category: Category(
       name: 'Salario', 
       type: TransactionType.income, 
@@ -17,6 +18,7 @@ final List<Transaction> mockTransactions = [
   Transaction(
     description: 'Alquiler Apartamento',
     amount: 800.00,
+    icon: Icons.home, // Icono derivado de la categoría
     category: Category(
       name: 'Alquiler', 
       type: TransactionType.expense, 
@@ -29,6 +31,7 @@ final List<Transaction> mockTransactions = [
   Transaction(
     description: 'Cena Sushi',
     amount: 45.50,
+    icon: Icons.restaurant, // Icono derivado de la categoría
     category: Category(
       name: 'Comida', 
       type: TransactionType.expense, 
@@ -41,6 +44,7 @@ final List<Transaction> mockTransactions = [
   Transaction(
     description: 'Venta Laptop Usada',
     amount: 300.00,
+    icon: Icons.laptop, // Icono derivado de la categoría
     category: Category(
       name: 'Freelance', 
       type: TransactionType.income, 
@@ -53,6 +57,7 @@ final List<Transaction> mockTransactions = [
   Transaction(
     description: 'Café de especialidad',
     amount: 4.50,
+    icon: Icons.coffee, // Icono derivado de la categoría
     category: Category(
       name: 'Café', 
       type: TransactionType.expense, 
@@ -65,6 +70,7 @@ final List<Transaction> mockTransactions = [
   Transaction(
     description: 'Gasolina',
     amount: 60.00,
+    icon: Icons.directions_car, // Icono derivado de la categoría
     category: Category(
       name: 'Transporte', 
       type: TransactionType.expense, 
@@ -77,6 +83,7 @@ final List<Transaction> mockTransactions = [
   Transaction(
     description: 'Consulta Médica',
     amount: 80.00,
+    icon: Icons.local_hospital, // Icono derivado de la categoría
     category: Category(
       name: 'Salud', 
       type: TransactionType.expense, 
@@ -89,6 +96,7 @@ final List<Transaction> mockTransactions = [
   Transaction(
     description: 'Intereses Inversión',
     amount: 12.40,
+    icon: Icons.trending_up, // Icono derivado de la categoría
     category: Category(
       name: 'Inversiones', 
       type: TransactionType.income, 
@@ -101,6 +109,7 @@ final List<Transaction> mockTransactions = [
   Transaction(
     description: 'Compra Supermercado',
     amount: 120.00,
+    icon: Icons.shopping_cart, // Icono derivado de la categoría
     category: Category(
       name: 'Comida', 
       type: TransactionType.expense, 
@@ -113,6 +122,7 @@ final List<Transaction> mockTransactions = [
   Transaction(
     description: 'Regalo Cumpleaños',
     amount: 50.00,
+    icon: Icons.card_giftcard, // Icono derivado de la categoría
     category: Category(
       name: 'Regalo', 
       type: TransactionType.income, 
@@ -125,6 +135,7 @@ final List<Transaction> mockTransactions = [
   Transaction(
     description: 'Sueldo Mayo',
     amount: 2800.00, // Ajustado para que tenga sentido con el nombre
+    icon: Icons.payments, // Icono derivado de la categoría
     category: Category(
       name: 'Salario', 
       type: TransactionType.income, 
@@ -137,6 +148,7 @@ final List<Transaction> mockTransactions = [
   Transaction(
     description: 'Pago Alquiler Marzo',
     amount: 450.00,
+    icon: Icons.home, // Icono derivado de la categoría
     category: Category(
       name: 'Alquiler', 
       type: TransactionType.expense, 
@@ -149,6 +161,7 @@ final List<Transaction> mockTransactions = [
   Transaction(
     description: 'Sueldo Quincena',
     amount: 1200.00,
+    icon: Icons.payments, // Icono derivado de la categoría
     category: Category(
       name: 'Salario', 
       type: TransactionType.income, 
@@ -161,6 +174,7 @@ final List<Transaction> mockTransactions = [
   Transaction(
     description: 'Cena Restaurante Chino',
     amount: 35.50,
+    icon: Icons.restaurant, // Icono derivado de la categoría
     category: Category(
       name: 'Comida', 
       type: TransactionType.expense, 
