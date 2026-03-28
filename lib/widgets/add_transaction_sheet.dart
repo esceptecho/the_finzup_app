@@ -48,6 +48,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
         description: _description,
         amount: _amount,
         date: _selectedDate,
+        icon: _selectedType == TransactionType.income ? Icons.attach_money : Icons.shopping_cart,
         attachments: [],
         category: Category(
           name: _selectedSubCategory.name,

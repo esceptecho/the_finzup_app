@@ -18,7 +18,7 @@ class BuildActionCard extends StatelessWidget {
     return InkWell(
       onTap: () => onTap,
       child: Container(
-        width: 90,
+        width: 70,
         height: 70,
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
