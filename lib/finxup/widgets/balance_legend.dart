@@ -6,13 +6,17 @@ class BalanceLegend extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _legendItem("Gastos", AppTheme.primaryWine),
-        const SizedBox(width: 20),
-        _legendItem("Disponible", AppTheme.accentGold),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: .start,
+        children: [
+          _legendItem("Gastos", AppTheme.primaryWine),
+          const SizedBox(width: 20),
+          _legendItem("Disponible", AppTheme.accentGold),
+        ],
+      ),
     );
   }
 

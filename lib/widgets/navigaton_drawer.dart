@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:the_finzup_app/features/dashboard/ui/app_colors.dart';
 import 'package:the_finzup_app/features/dashboard/ui/dashboard_screen.dart';
 import 'package:the_finzup_app/features/dashboard/widgets/example/lib/presentation/samples/line/line_chart_sample1.dart';
-import 'package:the_finzup_app/features/transactions/widgets/real_time_animated.dart';
+import 'package:the_finzup_app/features/transactions/widgets/dynamic_profile_screen.dart';
+import 'package:the_finzup_app/widgets/quick_note.dart';
 
 class NavigatonDrawer extends StatelessWidget {
   const NavigatonDrawer({super.key});
@@ -22,42 +23,7 @@ class NavigatonDrawer extends StatelessWidget {
         Navigator.pop(context);
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => Placeholder(
-              color: AppColors.color0efffaff,
-              child: const SizedBox(
-                height: 500,
-                child: Column(
-                  mainAxisAlignment: .center,
-                  children: [
-                    Card(
-                      child: Hero(
-                        tag: 'assets/arees_profile',
-                        child: CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          radius: 150,
-                          backgroundImage: AssetImage(
-                            'assets/arees_profile.jpeg',
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: EdgeInsetsGeometry.all(30),
-                      child: Text(
-                        'Miss Arees Angulo, sea bienvenida a este su espacio de trabajo donde puede organizar sus asuntos personales',
-                        style: TextStyle(
-                          color: AppColors.white,
-                          backgroundColor: Colors.black,
-                          fontSize: 14,
-                          decoration: .none,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            builder: (context) => DynamicProfileScreen(),
           ),
         );
       },
@@ -82,7 +48,7 @@ class NavigatonDrawer extends StatelessWidget {
             ),
             Text(
               'arees@brang.com',
-              style: TextStyle(fontSize: 16, color: AppColors.white),
+              style: TextStyle(fontSize: 16, color: AppColors.textHint),
             ),
           ],
         ),
@@ -158,18 +124,18 @@ class NavigatonDrawer extends StatelessWidget {
         const Divider(color: AppColors.dividerColor),
         ListTile(
           leading: const Icon(
-            Icons.account_tree_outlined,
+            Icons.grid_view_outlined,
             color: AppColors.white,
           ),
           title: const Text(
-            'Plugins',
+            'Notas',
             style: TextStyle(color: AppColors.white),
           ),
           onTap: () {
             Navigator.pop(context);
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => RealTimeAnimated(),
+                builder: (context) => NotesGridScreen(),
               ),
             );
           },

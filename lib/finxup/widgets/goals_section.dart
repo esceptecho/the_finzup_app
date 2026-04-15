@@ -40,7 +40,7 @@ class GoalsSection extends StatelessWidget {
                   icon: const Icon(
                     Icons.add_circle_outline,
                     size: 28,
-                    color: AppTheme.accentGold,
+                    // color: AppTheme.primaryWine,
                   ),
                   onPressed: onAddTap, // <--- Abre el modal de metas
                 ),

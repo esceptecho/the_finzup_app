@@ -43,7 +43,7 @@ class Category {
 }
 
 class Transaction {
-  final String id;
+  String? id;
   final String description;
   final double amount;
   final Category category;
@@ -110,7 +110,7 @@ class Transaction {
       date: DateTime.parse(map['date']),
     );
   }
-  
+
   // Método privado para convertir el subCategory de String a Enum
   static Enum _parseSubCategory(String typeStr, String subCatStr) {
     if (typeStr == 'TransactionType.income') {

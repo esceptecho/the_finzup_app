@@ -308,6 +308,7 @@ class _HomePageState extends State<HomePage> {
                         child: Lottie.asset(
                           "assets/lotties/Secure-Payment-Card.json",
                           fit: BoxFit.contain,
+                          repeat: false,
                         ),
                       ),
                     ),
@@ -674,7 +675,7 @@ class _HomePageState extends State<HomePage> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Row(
                   spacing: 4,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

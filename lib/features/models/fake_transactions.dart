@@ -175,6 +175,7 @@ final List<Transaction> mockTransactions = [
     description: 'Cena Restaurante Chino',
     amount: 35.50,
     icon: Icons.restaurant, // Icono derivado de la categoría
+
     category: Category(
       name: 'Comida', 
       type: TransactionType.expense, 

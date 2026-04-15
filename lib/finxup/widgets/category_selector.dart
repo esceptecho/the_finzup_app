@@ -31,7 +31,7 @@ class CategorySelector extends StatelessWidget {
                 : Alignment.centerRight,
             child: Container(
               width: MediaQuery.of(context).size.width * 0.4,
-              margin: const EdgeInsets.all(4),
+              margin: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(21),

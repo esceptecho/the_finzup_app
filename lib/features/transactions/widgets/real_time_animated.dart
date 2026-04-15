@@ -10,14 +10,18 @@ class RealTimeAnimated extends StatefulWidget {
 
 class _RealTimeAnimatedState extends State<RealTimeAnimated> {
   final TextEditingController _controller = TextEditingController();
-  
+
   // Variables de estado
   String _displayText = '';
   double _fontSize = 24;
   Color _textColor = Colors.blue;
 
   final List<Color> _colors = [
-    Colors.blue, Colors.green, Colors.purple, Colors.orange, Colors.red,
+    Colors.blue,
+    Colors.green,
+    Colors.purple,
+    Colors.orange,
+    Colors.red,
   ];
 
   @override
@@ -40,7 +44,8 @@ class _RealTimeAnimatedState extends State<RealTimeAnimated> {
 
   @override
   void dispose() {
-    _controller.dispose(); // El removeListener no es estrictamente necesario si haces dispose
+    _controller
+        .dispose(); // El removeListener no es estrictamente necesario si haces dispose
     super.dispose();
   }
 
@@ -56,24 +61,7 @@ class _RealTimeAnimatedState extends State<RealTimeAnimated> {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              TextField(
-                controller: _controller,
-                decoration: InputDecoration(
-                  labelText: 'Tiempo real animado',
-                  hintText: 'Escribe para ver la magia...',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  prefixIcon: const Icon(Icons.animation),
-                  suffixIcon: _displayText.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.clear),
-                          onPressed: () => _controller.clear(),
-                        )
-                      : null,
-                ),
-              ),
-              const SizedBox(height: 30),
+              
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 width: double.infinity,
@@ -85,8 +73,10 @@ class _RealTimeAnimatedState extends State<RealTimeAnimated> {
                 ),
                 child: Column(
                   children: [
-                    const Text('📝 Preview en tiempo real:',
-                        style: TextStyle(fontSize: 16, color: Colors.grey)),
+                    const Text(
+                      '📝 Preview en tiempo real:',
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
                     const SizedBox(height: 10),
                     // AnimatedDefaultTextStyle anima el cambio de fuente suavemente
                     AnimatedDefaultTextStyle(
@@ -115,18 +105,41 @@ class _RealTimeAnimatedState extends State<RealTimeAnimated> {
                   ],
                 ),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 20),
+              TextField(
+                controller: _controller,
+                decoration: InputDecoration(
+                  labelText: 'Tiempo real animado',
+                  hintText: 'Escribe para ver la magia...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  prefixIcon: const Icon(Icons.animation),
+                  suffixIcon: _displayText.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () => _controller.clear(),
+                        )
+                      : null,
+                ),
+              ),
+              const SizedBox(height: 30),
               // Disparar BottomSheet
               ElevatedButton(
                 onPressed: () {
                   showModalBottomSheet(
                     context: context,
-                    backgroundColor: Colors.transparent, // Para bordes redondeados personalizados
+                    backgroundColor: Colors
+                        .transparent, // Para bordes redondeados personalizados
                     builder: (context) => Container(
-                      height: MediaQuery.of(context).size.height * 0.5, // 50% de la pantalla
+                      height:
+                          MediaQuery.of(context).size.height *
+                          0.5, // 50% de la pantalla
                       decoration: const BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(25),
+                        ),
                       ),
                       child: PantallaSaludo(), // Pasando datos
                     ),

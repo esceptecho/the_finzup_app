@@ -43,7 +43,7 @@ class _HomePgeState extends State<HomePge> {
   bool isChecked = false; // 1. Definir la variable de estado
   late List<AssetImage> assetImageList;
   String? rutaImagen;
-  List<Transaction> _transactions = [];
+  final List<Transaction> _transactions = [];
 
   // ... (en tu _NewHomeScreenState) ...
 
@@ -173,7 +173,7 @@ class _HomePgeState extends State<HomePge> {
                   ),
                 ),
                 centerTitle: true,
-                expandedHeight: 370,
+                expandedHeight: 300,
                 floating: true,
                 pinned: false, // Mantiene una barra visible al hacer scroll
                 flexibleSpace: FlexibleSpaceBar(
@@ -249,22 +249,10 @@ class _HomePgeState extends State<HomePge> {
                           child: Container(
                             padding: EdgeInsets.only(top: 100),
                             width: double.infinity, // Define un ancho fijo
-                            height: 450, // Define un alto fijo
-                            child: Column(
-                              children: [
-                                Lottie.asset(
-                                  "assets/lotties/Financial_charts_statistics.json",
-                                  fit: BoxFit.contain,
-                                ),
-                              ],
-                            ),
+                            height: 50, // Define un alto fijo
+                            child: Icon(Icons.bar_chart_sharp, size: 40,),
                           ),
                         ),
-                  // Container(
-                  //     height: 130,
-                  //     color: Colors.transparent,
-                  //     child: buildQuickActions(),
-                  //   ),
                   centerTitle: true,
                 ),
               ),
@@ -365,12 +353,74 @@ class _HomePgeState extends State<HomePge> {
                   ),
                 ),
               if (!isInvoice) SliverToBoxAdapter(child: SizedBox(height: 40)),
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    // ... tus otros widgets ...
+                    SizedBox(
+                      height: 200, // Altura para el gráfico),
+                    )
+                  ],
+                ),
+              ),
+              if (isInvoice)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        height: 250,
+                        color: AppColors.color0ff0f0ff, // Gris casi negro
+                        child: Center(
+                          child: Icon(
+                            Icons.bar_chart,
+                            color: AppColors.burgundyLight,
+                            size: 70,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                if (isInvoice)
+                SliverToBoxAdapter(child: const SizedBox(height: 20)),
+
+              if (isInvoice)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 0.0,
+                      vertical: 24,
+                    ),
+                    child: Container(
+                      height: 120,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: AppColors.color0af0f0ff, // Tu gris neutro oscuro
+                        borderRadius: BorderRadius.circular(0),
+                        border: Border.all(
+                          color: AppColors.burgundyLight.withOpacity(0.1),
+                        ),
+                      ),
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsetsGeometry.all(12),
+                          child: Stack(
+                            children: [
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               if (isInvoice)
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Container(
-                      height: 360,
+                      height: 250,
                       decoration: BoxDecoration(
                         color: AppColors.cardBgColor, // Vino tinto
                         borderRadius: BorderRadius.circular(20),
@@ -386,114 +436,16 @@ class _HomePgeState extends State<HomePge> {
                         child: Lottie.asset(
                           "assets/lotties/Secure-Payment-Card.json",
                           fit: BoxFit.contain,
+                          repeat: false,
                         ),
                       ),
                     ),
                   ),
                 ),
               // --- Sección 2: Contenedor de Información (Gris Neutro) ---
-              if (isInvoice)
-                SliverToBoxAdapter(child: const SizedBox(height: 20)),
-
-              // En tu build de _NewHomeScreenState:
-              // ...
-              SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    // ... tus otros widgets ...
-                    SizedBox(
-                      height: 200, // Altura para el gráfico
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: LineChart(
-                          LineChartData(
-                            // ... otras configuraciones de LineChartData ...
-                            lineBarsData: [
-                              LineChartBarData(
-                                spots: _getMonthlyExpenseSpots(
-                                  _transactions,
-                                ), // <--- AQUÍ LE PASAS TUS DATOS REALES
-                                isCurved: true,
-                                color: AppTheme.expenseRed,
-                                barWidth: 3,
-                                isStrokeCapRound: true,
-                                dotData: FlDotData(
-                                  show: false,
-                                ), // O false si no quieres puntos
-                                belowBarData: BarAreaData(show: false),
-                              ),
-                            ],
-                            // ... configuración de ejes X e Y ...
-                            // FlAxisTitle para los meses y montos
-                          ),
-                        ),
-                      ),
-                    ),
-                    // ...
-                  ],
-                ),
-              ),
-              if (isInvoice)
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 0.0,
-                      vertical: 24,
-                    ),
-                    child: Container(
-                      height: 260,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: AppColors.color0af0f0ff, // Tu gris neutro oscuro
-                        borderRadius: BorderRadius.circular(0),
-                        border: Border.all(
-                          color: AppColors.burgundyLight.withOpacity(0.1),
-                        ),
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsetsGeometry.all(12),
-                          child: Stack(
-                            children: [
-                              GraficoCotizacion(
-                                lineColor: const Color.fromARGB(
-                                  129,
-                                  41,
-                                  236,
-                                  226,
-                                ),
-                                datos: datosPrueba,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+              
 
               // --- Sección 3: Otros Contenedores ---
-              if (isInvoice)
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        height: 150,
-                        color: AppColors.color0ff0f0ff, // Gris casi negro
-                        child: Center(
-                          child: Icon(
-                            Icons.bar_chart,
-                            color: AppColors.burgundyLight,
-                            size: 70,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-
               if (!isInvoice)
                 SliverToBoxAdapter(
                   child: SizedBox(
@@ -699,35 +651,3 @@ class _HomePgeState extends State<HomePge> {
   }
 }
 
-/*                 imagen dinamica y leadind previos
-            child: Opacity(
-                  opacity: 0.2,
-                  child: Card.outlined(
-                    color: Color(
-                (math.Random().nextDouble() * 0xFFFFFF).toInt(),
-              ).withOpacity(0.6),
-                    child:
-                        (rutaImagen != null && //
-                            rutaImagen!.isNotEmpty)
-                        ? Image.asset(rutaImagen!, fit: BoxFit.cover)
-                        : const Center(
-                            child: Icon(
-                              Icons.image_search,
-                              color: Colors.white,
-                              size: 140,
-                            ),
-                          ),
-                  ),
-                ),
-            leading: IconButton(
-              onPressed: () async {
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setBool(
-                  'isLoggedIn',
-                  true,
-                ); // Guarda que el usuario está logeado
-                // ignore: use_build_context_synchronously
-                Navigator.pushReplacementNamed(context, '/onboarding');
-              },
-              icon: const Icon(Icons.menu_sharp, color: AppColors.white),
-            ), */

@@ -4,6 +4,7 @@ import 'package:the_finzup_app/finxup/models/bill.dart';
 import 'package:the_finzup_app/finxup/models/database_helper.dart';
 import 'package:the_finzup_app/finxup/models/goal.dart';
 import 'package:the_finzup_app/finxup/models/transaction.dart';
+import 'package:the_finzup_app/finxup/screens/expenses_chart_card_screen.dart';
 import 'package:the_finzup_app/finxup/theme/app_theme.dart';
 import 'package:the_finzup_app/finxup/widgets/add_goal_form.dart';
 import 'package:the_finzup_app/finxup/widgets/add_transaction_form.dart';
@@ -356,31 +357,119 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                         spentPercentage: _spentPercentage,
                       ),
                       const SizedBox(
-                        height: 24,
+                        height: 40,
                       ), // Espacio entre el anillo y la leyenda
                       // NUEVA LEYENDA
-                      const BalanceLegend(),
+                      Row(
+                        mainAxisAlignment: .spaceBetween,
+                        children: [
+                          const BalanceLegend(),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24.0,
+                            ),
+                            child: OutlinedButton.icon(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => StatisticsScreen(
+                                      transactions: _transactions,
+                                    ),
+                                  ),
+                                );
+                              },
+                              label: const Icon(
+                                Icons
+                                    .bar_chart_rounded, // Icono redondeado para un look más moderno
+                                size: 28,
+                                color: AppTheme
+                                    .textWhite, // Usamos el color de acento para que resalte sutilmente
+                              ),
+                              style: OutlinedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 12,
+                                ),
+                                side: BorderSide(
+                                  color: AppTheme.accentGoldBright.withOpacity(
+                                    0.6,
+                                  ), // El "borde fino" y sutil
+                                  width: 1,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    16,
+                                  ), // Bordes suavizados
+                                ),
+                                backgroundColor: AppTheme.surface.withOpacity(
+                                  0.4,
+                                ), // Un fondo leve para dar profundidad
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-          SliverToBoxAdapter(
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              height: 24,
-              color: AppTheme.backgroundDeep,
-              child: Center(),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: ExpensesChartCard(
-              transactions:
-                  _transactions, // Le pasas tu lista de transacciones de la base de datos
-            ),
-          ),
-          SliverToBoxAdapter(child: SizedBox(height: 24)),
+          SliverToBoxAdapter(child: SizedBox(height: 16)),
+          // SliverToBoxAdapter(
+          //   child: Padding(
+          //     padding: const EdgeInsets.symmetric(horizontal: 100.0),
+          //     child: OutlinedButton.icon(
+          //       onPressed: () {
+          //         Navigator.push(
+          //           context,
+          //           MaterialPageRoute(
+          //             builder: (context) =>
+          //                 StatisticsScreen(transactions: _transactions),
+          //           ),
+          //         );
+          //       },
+          //       icon: const Icon(
+          //         Icons
+          //             .bar_chart_rounded, // Icono redondeado para un look más moderno
+          //         size: 22,
+          //         color: AppTheme
+          //             .textWhite, // Usamos el color de acento para que resalte sutilmente
+          //       ),
+          //       label: const Text(
+          //         "Ver Estadísticas",
+          //         style: TextStyle(
+          //           fontSize: 15,
+          //           fontWeight: FontWeight.w600,
+          //           color: Colors.white, // Texto más legible
+          //         ),
+          //       ),
+          //       style: OutlinedButton.styleFrom(
+          //         padding: const EdgeInsets.symmetric(
+          //           horizontal: 20,
+          //           vertical: 12,
+          //         ),
+          //         side: BorderSide(
+          //           color: AppTheme.expenseRedDark.withOpacity(
+          //             0.6,
+          //           ), // El "borde fino" y sutil
+          //           width: 1,
+          //         ),
+          //         shape: RoundedRectangleBorder(
+          //           borderRadius: BorderRadius.circular(
+          //             16,
+          //           ), // Bordes suavizados
+          //         ),
+          //         backgroundColor: AppTheme.surface.withOpacity(
+          //           0.4,
+          //         ), // Un fondo leve para dar profundidad
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          // showExpensesChar(), // reemplazado por el nuevo botón de estadísticas
+          SliverToBoxAdapter(child: SizedBox(height: 40)),
           _myGoals.isNotEmpty
               ?
                 // 2. Sección de Metas (Horizontal)
@@ -402,7 +491,7 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                       vertical: 8,
                     ),
                     height: 180,
-                    color: AppTheme.backgroundDeep,
+                    color: AppTheme.surfaceLighter,
                     child: Center(
                       child: Column(
                         children: [
@@ -415,11 +504,16 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                             },
                             onAddMoney: (goal) => _showAddMoneyDialog(goal),
                           ),
-                          Text(
-                            "Tus metas aparecerán aquí. ¡Agrega tu primera meta para empezar a ahorrar!",
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 16,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                            ),
+                            child: Text(
+                              "Tus metas aparecerán aquí. ¡Agrega tu primera meta para empezar a ahorrar!",
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         ],
@@ -435,7 +529,7 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
               children: [
                 _myGoals.isNotEmpty
                     ? const SizedBox(height: 60)
-                    : const SizedBox(height: 12),
+                    : const SizedBox(height: 24),
                 CategorySelector(
                   showTransactions: _isShowingTransactions,
                   onChanged: (val) {
@@ -444,15 +538,11 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                     });
                   },
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 16),
               ],
             ),
           ),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 16,
-            ),
-          ),
+          // SliverToBoxAdapter(child: SizedBox(height: 4)),
           // 4. La Lista de Movimientos o Facturas
           // Usamos SliverList para que sea eficiente
           _buildSliverList(),
@@ -463,22 +553,27 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
               color: AppTheme.backgroundDeep,
             ),
           ),
-          SliverToBoxAdapter(child: SizedBox(
-            height: 36,
-          ),),
+          SliverToBoxAdapter(child: SizedBox(height: 8)),
           // 2. EL NUEVO GRÁFICO ELEGANTE
-          // SliverToBoxAdapter(
-          //   child: SizedBox.square(dimension: 250, child: CardSelectionUI()),
-          // ),
+          SliverToBoxAdapter(child: SizedBox()),
         ],
       ),
 
       floatingActionButton: FloatingActionButton(
-        backgroundColor: AppTheme.accentGold,
+        backgroundColor: AppTheme.primaryWineDark,
         onPressed: () => _openAddTransactionModal(context),
-        child: const Icon(Icons.add, color: Colors.black, size: 32),
+        child: Icon(Icons.add, color: AppTheme.textWhite, size: 32),
       ),
       floatingActionButtonLocation: .centerDocked,
+    );
+  }
+
+  SliverToBoxAdapter showExpensesChar() {
+    return SliverToBoxAdapter(
+      child: ExpensesChartCard(
+        transactions:
+            _transactions, // Le pasas tu lista de transacciones de la base de datos
+      ),
     );
   }
 
