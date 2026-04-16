@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:the_finzup_app/features/dashboard/ui/home_pge.dart';
+import 'package:the_finzup_app/features/models/fake_transactions.dart';
+import 'package:the_finzup_app/features/transactions/ui/transaction_screen.dart';
 import 'package:the_finzup_app/finxup/models/bill.dart';
 import 'package:the_finzup_app/finxup/models/database_helper.dart';
 import 'package:the_finzup_app/finxup/models/goal.dart';
@@ -283,16 +285,20 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
         leading: IconButton.filled(
           onPressed: () {
             Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePge()),
-            );
+                context,
+                MaterialPageRoute(
+                  // Aquí pasamos los datos mock que creamos antes
+                  builder: (context) =>
+                      TransactionGrid(transactions: mockTransactions),
+                ),
+              );
           },
-          icon: Icon(Icons.home_outlined),
+          icon: Icon(Icons.compare_arrows_rounded),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
-          'FINXUP',
+          'FINZUP',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
@@ -331,33 +337,29 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(15),
                     color: AppTheme.backgroundDeep,
-                    // gradient: LinearGradient(
-                    //   begin: Alignment.topLeft,
-                    //   end: Alignment.bottomRight,
-                    //   colors: [
-                    //     Color(0xFF1A1A1A), // Base Neutral (Casi negro)
-                    //     AppTheme.primaryWineDark.withOpacity(0.1), // Vino suave
-                    //     AppTheme.incomeGreenDark.withOpacity(
-                    //       0.1,
-                    //     ), // Cian/Verde opaco
-                    //     AppTheme.accentGoldMuted.withOpacity(
-                    //       0.1,
-                    //     ), // Toque dorado final
-                    //   ],
-                    //   stops: [0.1, 0.4, 0.7, 1.0],
-                    // ),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xFF1A1A1A), // Base Neutral (Casi negro)
+                        AppTheme.primaryWineDark.withValues(alpha: 0.1), // Vino suave
+                        AppTheme.incomeGreenDark.withValues(alpha: 0.1), // Cian/Verde opaco
+                        AppTheme.accentGoldMuted.withValues(alpha: 0.1), // Toque dorado final
+                      ],
+                      stops: [0.1, 0.4, 0.7, 1.0],
+                    ),
                   ),
                   child: Column(
                     children: [
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 24),
                       NewBalanceRing(
                         totalBalance: _calculatedBalance,
                         spentPercentage: _spentPercentage,
                       ),
                       const SizedBox(
-                        height: 40,
+                        height: 8,
                       ), // Espacio entre el anillo y la leyenda
                       // NUEVA LEYENDA
                       Row(
@@ -382,7 +384,7 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                               label: const Icon(
                                 Icons
                                     .bar_chart_rounded, // Icono redondeado para un look más moderno
-                                size: 28,
+                                size: 20,
                                 color: AppTheme
                                     .textWhite, // Usamos el color de acento para que resalte sutilmente
                               ),
@@ -410,66 +412,21 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 12),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-          SliverToBoxAdapter(child: SizedBox(height: 16)),
           // SliverToBoxAdapter(
-          //   child: Padding(
-          //     padding: const EdgeInsets.symmetric(horizontal: 100.0),
-          //     child: OutlinedButton.icon(
-          //       onPressed: () {
-          //         Navigator.push(
-          //           context,
-          //           MaterialPageRoute(
-          //             builder: (context) =>
-          //                 StatisticsScreen(transactions: _transactions),
-          //           ),
-          //         );
-          //       },
-          //       icon: const Icon(
-          //         Icons
-          //             .bar_chart_rounded, // Icono redondeado para un look más moderno
-          //         size: 22,
-          //         color: AppTheme
-          //             .textWhite, // Usamos el color de acento para que resalte sutilmente
-          //       ),
-          //       label: const Text(
-          //         "Ver Estadísticas",
-          //         style: TextStyle(
-          //           fontSize: 15,
-          //           fontWeight: FontWeight.w600,
-          //           color: Colors.white, // Texto más legible
-          //         ),
-          //       ),
-          //       style: OutlinedButton.styleFrom(
-          //         padding: const EdgeInsets.symmetric(
-          //           horizontal: 20,
-          //           vertical: 12,
-          //         ),
-          //         side: BorderSide(
-          //           color: AppTheme.expenseRedDark.withOpacity(
-          //             0.6,
-          //           ), // El "borde fino" y sutil
-          //           width: 1,
-          //         ),
-          //         shape: RoundedRectangleBorder(
-          //           borderRadius: BorderRadius.circular(
-          //             16,
-          //           ), // Bordes suavizados
-          //         ),
-          //         backgroundColor: AppTheme.surface.withOpacity(
-          //           0.4,
-          //         ), // Un fondo leve para dar profundidad
-          //       ),
-          //     ),
+          //   child: SizedBox(
+          //     height: 16,
+          //     child: Divider(color: AppTheme.textDisabled.withOpacity(0.4)),
           //   ),
           // ),
-          // showExpensesChar(), // reemplazado por el nuevo botón de estadísticas
-          SliverToBoxAdapter(child: SizedBox(height: 40)),
+
+          SliverToBoxAdapter(child: SizedBox(height: 8)),
           _myGoals.isNotEmpty
               ?
                 // 2. Sección de Metas (Horizontal)
@@ -527,9 +484,8 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
           SliverToBoxAdapter(
             child: Column(
               children: [
-                _myGoals.isNotEmpty
-                    ? const SizedBox(height: 60)
-                    : const SizedBox(height: 24),
+                // _myGoals.isNotEmpty
+                  const SizedBox(height: 24),
                 CategorySelector(
                   showTransactions: _isShowingTransactions,
                   onChanged: (val) {
@@ -621,92 +577,4 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
 
 
 
-
-
-  
-  // Previo body
-  // Column(
-  //   children: [
-  //     const SizedBox(height: 24),
-  //     BalanceRing(
-  //       totalBalance: _calculatedBalance,
-  //       spentPercentage: _spentPercentage,
-  //     ),
-  //     const SizedBox(height: 40),
-  //     // Nueva sección de metas
-  //     GoalsSection(goals: _myGoals, onAddTap: _openAddGoalModal),
-
-  //     const SizedBox(height: 24),
-  //     CategorySelector(
-  //       showTransactions: _isShowingTransactions,
-  //       onChanged: (val) {
-  //         setState(() {
-  //           _isShowingTransactions = val;
-  //         });
-  //       },
-  //     ),
-
-  //     // Lógica simplificada y corregida del Expanded
-  //     Expanded(child: _buildList()),
-  //     const SizedBox(height: 24),
-  //   ],
-  // ),
-
-  // Separar el ListView en un método ayuda a mantener el build limpio
-  // Widget _buildList() {
-  //   if (_isShowingTransactions) {
-  //     if (_transactions.isEmpty) {
-  //       return Center(
-  //         child: Text(
-  //           "No hay facturas pendientes",
-  //           style: TextStyle(color: Colors.white54),
-  //         ),
-  //       );
-  //     }
-
-  //     return ListView.builder(
-  //       itemCount: _transactions.length,
-  //       itemBuilder: (context, index) {
-  //         final tx = _transactions[index];
-  //         return SlidableItem(
-  //           onDelete: () {
-  //             print("Intentando borrar ID: ${tx.id}");
-  //             _deleteTransaction(tx.id!);
-  //           },
-  //           child: TransactionCard(transaction: tx),
-  //         );
-  //       },
-  //     );
-  //   } else {
-  //     if (_bills.isEmpty) {
-  //       return Center(
-  //         // child: Text(
-  //         //   "No hay facturas pendientes",
-  //         //   style: TextStyle(color: Colors.white54),
-  //         // ),
-  //         child: SizedBox(
-  //           width: double.infinity, // Define un ancho fijo
-  //           height: 300, // Define un alto fijo
-  //           child: Lottie.asset(
-  //             "assets/lotties/Fireworks.json",
-  //             fit: BoxFit.contain,
-  //             repeat: true,
-  //           ),
-  //         ),
-  //       );
-  //     }
-
-  //     return ListView.builder(
-  //       itemCount: _bills.length,
-  //       itemBuilder: (context, index) {
-  //         final bill = _bills[index];
-  //         return SlidableItem(
-  //           onDelete: () => _deleteBill(bill.id),
-  //           onToggleStatus: () => _markBillAsPaid(bill),
-  //           child: BillCard(bill: bill),
-  //         );
-  //       },
-  //     );
-  //   }
-  
 

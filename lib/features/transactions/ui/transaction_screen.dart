@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:the_finzup_app/features/dashboard/ui/app_colors.dart';
 import 'package:the_finzup_app/features/models/fake_transactions.dart';
 import 'package:the_finzup_app/features/models/transaction.dart';
+import 'package:the_finzup_app/features/transactions/ui/expansion_panel_finance_insight_.dart';
 import 'package:the_finzup_app/widgets/add_transaction_sheet.dart';
 
 class TransactionGrid extends StatefulWidget {
@@ -50,15 +51,11 @@ class _TransactionGridState extends State<TransactionGrid> {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: TextButton.icon(
               onPressed: () => setState(() => isVisible = !isVisible),
-              icon: Icon(
+              label: Icon(
                 isVisible
                     ? Icons.visibility_off_outlined
                     : Icons.visibility_outlined,
-                size: 20,
-              ),
-              label: Text(
-                isVisible ? 'Esconder' : 'Mostrar',
-                style: TextStyle(fontSize: 12),
+                size: 28,
               ),
               style: TextButton.styleFrom(
                 foregroundColor: AppColors.white, // O el color de tu tema
@@ -69,10 +66,11 @@ class _TransactionGridState extends State<TransactionGrid> {
               ),
             ),
           ),
+          SizedBox(width: 12,),
           // Botón de Agregar (más iconográfico)
           IconButton(
             onPressed: () => _openAddTransaction(context),
-            icon: const Icon(Icons.add_circle_outline, size: 28),
+            icon: const Icon(Icons.add_circle, size: 32),
             tooltip: 'Añadir transacción',
           ),
           const SizedBox(width: 8), // Pequeño margen al final
@@ -160,7 +158,8 @@ class _TransactionGridState extends State<TransactionGrid> {
                   // Creamos un pequeño rectángulo en el punto del toque
                   position: RelativeRect.fromLTRB(0.0, 400.0, 0.0, 20.0),
                   items: [
-                    const PopupMenuItem(child: ExpansionPanelListItem()),
+                    // const PopupMenuItem(child: ExpansionPanelListItem()),
+                    const PopupMenuItem(child: ExpansionPanelFinanceInsight()),
                   ],
                 );
               },
@@ -170,7 +169,7 @@ class _TransactionGridState extends State<TransactionGrid> {
                   applicationName: 'The Finzup App',
                 );
               },
-              child: Icon(Icons.filter_list_rounded, size: 32, color: AppColors.iceWhite,),
+              child: Icon(Icons.notification_important, size: 32, color: AppColors.iceWhite,),
             )
           : SizedBox.shrink(),
     );
@@ -199,6 +198,47 @@ List<Item> generateItems(int numberOfItems) {
   });
 }
 
+
+enum InsightType { positive, warning, info, goal }
+
+class FinanceInsight {
+  FinanceInsight({
+    required this.title,
+    required this.description,
+    required this.type,
+    this.isExpanded = false,
+    this.actionText, // Ejemplo: "Ver presupuesto"
+    this.icon,
+  });
+
+  String title;
+  String description;
+  InsightType type;
+  bool isExpanded;
+  String? actionText;
+  String? icon;
+}
+
+
+List<FinanceInsight> generateInsights() {
+  // En una app real, esto vendría de un servicio de análisis
+  return [
+    FinanceInsight(
+      title: '¡Buen trabajo, Diego!',
+      description: 'Tu balance este mes es un 10% superior al anterior. ¡Vas por buen camino!',
+      type: InsightType.positive,
+      icon: '🚀',
+    ),
+    FinanceInsight(
+      title: 'Presupuesto de Ocio',
+      description: 'Has consumido el 90% de tu presupuesto para salidas. ¡Cuidado con el fin de semana!',
+      type: InsightType.warning,
+      actionText: 'Ajustar presupuesto',
+      icon: '⚠️',
+    ),
+  ];
+}
+
 class ExpansionPanelListItem extends StatefulWidget {
   const ExpansionPanelListItem({super.key});
 
@@ -208,6 +248,7 @@ class ExpansionPanelListItem extends StatefulWidget {
 }
 
 class _ExpansionPanelListItemState extends State<ExpansionPanelListItem> {
+  // final List<Item> _data = generateItems(8);
   final List<Item> _data = generateItems(8);
 
   @override
@@ -251,3 +292,5 @@ class _ExpansionPanelListItemState extends State<ExpansionPanelListItem> {
     );
   }
 }
+
+

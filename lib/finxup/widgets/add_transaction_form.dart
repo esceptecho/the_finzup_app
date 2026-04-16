@@ -96,7 +96,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
     final Event event = Event(
       title: '🔴 Pagar: $titulo',
       description:
-          'Monto: \$${monto.toStringAsFixed(2)}\nGenerado desde FINXUP',
+          'Monto: \$${monto.toStringAsFixed(2)}\nGenerado desde FINZUP',
       startDate: fecha,
       endDate: fecha.add(
         const Duration(hours: 1),
@@ -194,7 +194,16 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
             maxLength: 8,
           ),
           const SizedBox(height: 8),
-
+          // TODO: cambiar modelo de transaction por el modelo mas completo con las subcategorias
+          // DropdownButtonFormField<Enum>(
+          //       initialValue: _selectedSubCategory,
+          //       decoration: const InputDecoration(labelText: 'Categoría', border: OutlineInputBorder()),
+          //       items: _selectedType.subCategories.map((cat) {
+          //         return DropdownMenuItem(value: cat, child: Text(cat.name.toUpperCase()));
+          //       }).toList(),
+          //       onChanged: (value) => setState(() => _selectedSubCategory = value!),
+          //     ),
+          //     const SizedBox(height: 15),
           // 3. El Selector de Fecha Visual
           Row(
             children: [

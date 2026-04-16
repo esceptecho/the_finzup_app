@@ -14,7 +14,7 @@ class CategorySelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       height: 45,
       decoration: BoxDecoration(
         color: AppTheme.surface,
@@ -30,10 +30,10 @@ class CategorySelector extends StatelessWidget {
                 ? Alignment.centerLeft
                 : Alignment.centerRight,
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.4,
+              width: MediaQuery.of(context).size.width * 0.5,
               margin: const EdgeInsets.all(2),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppTheme.accentGoldMuted,
                 borderRadius: BorderRadius.circular(21),
               ),
             ),

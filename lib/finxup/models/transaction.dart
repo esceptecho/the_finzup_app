@@ -3,7 +3,7 @@ import 'package:uuid/uuid.dart';
 
 Uuid uuid = Uuid();
 
-enum TransactionCategory { income, expense }
+enum TransactionCategory { income, expense } 
 
 class Transaction {
   String? id;

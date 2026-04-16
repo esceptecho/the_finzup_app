@@ -78,11 +78,6 @@ class NavigatonDrawer extends StatelessWidget {
           ),
           onTap: () {
             Navigator.pop(context);
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => Placeholder(),
-              ),
-            );
           },
         ),
         ListTile(
@@ -96,11 +91,11 @@ class NavigatonDrawer extends StatelessWidget {
           ),
           onTap: () {
             Navigator.pop(context);
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => LineChartSample1(),
-              ),
-            );
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (context) => LineChartSample1(),
+            //   ),
+            // );
           },
         ),
         ListTile(

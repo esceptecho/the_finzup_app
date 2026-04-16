@@ -42,7 +42,7 @@ class Category {
   });
 }
 
-class Transaction {
+class Transaction { 
   String? id;
   final String description;
   final double amount;

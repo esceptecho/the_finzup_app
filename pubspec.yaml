@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   add_2_calendar: ^3.0.1
+  animated_text_kit: ^4.3.0
   build_runner: ^2.5.4
   collection: ^1.19.1
   cupertino_icons: ^1.0.8
