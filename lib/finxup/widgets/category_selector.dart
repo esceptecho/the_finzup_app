@@ -33,7 +33,8 @@ class CategorySelector extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.5,
               margin: const EdgeInsets.all(2),
               decoration: BoxDecoration(
-                color: AppTheme.accentGoldMuted,
+                color: AppTheme.textWhite.withValues(alpha: .8
+                ),
                 borderRadius: BorderRadius.circular(21),
               ),
             ),

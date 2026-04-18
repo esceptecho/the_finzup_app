@@ -67,32 +67,6 @@ class _ShimmerBorderWrapperState extends State<ShimmerBorderWrapper>
     _controller.dispose();
     super.dispose();
   }
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _controller = AnimationController(
-  //     vsync: this,
-  //     duration: const Duration(seconds: 2),
-  //   );
-
-  //   if (widget.isAnimating) {
-  //     _controller.repeat();
-  //   }
-  // }
-
-  // 🔥 Escucha los cambios para iniciar o detener la animación dinámicamente
-  // @override
-  // void didUpdateWidget(covariant ShimmerBorderWrapper oldWidget) {
-  //   super.didUpdateWidget(oldWidget);
-  //   if (widget.isAnimating != oldWidget.isAnimating) {
-  //     if (widget.isAnimating) {
-  //       _controller.repeat();
-  //     } else {
-  //       _controller.stop();
-  //       _controller.reset(); // si quieres que desaparezca al detenerse
-  //     }
-  //   }
-  // }
   
 
   @override
@@ -148,7 +122,7 @@ class _ShimmerPainter extends CustomPainter {
         shimmerColor, // Usamos el color dinámico
         Colors.transparent,
       ],
-      stops: const [0.0, 0.1, 0.2], // Ajusta la longitud del destello aquí
+      stops: const [0.0, 0.1, 0.7], // Ajusta la longitud del destello aquí
       transform: GradientRotation(progress * 2 * math.pi),
     ).createShader(Offset.zero & size);
 
@@ -173,3 +147,34 @@ class _ShimmerPainter extends CustomPainter {
            oldDelegate.isAnimating != isAnimating;
   }
 }
+
+
+
+
+// --- Previo init ---
+// @override
+  // void initState() {
+  //   super.initState();
+  //   _controller = AnimationController(
+  //     vsync: this,
+  //     duration: const Duration(seconds: 2),
+  //   );
+
+  //   if (widget.isAnimating) {
+  //     _controller.repeat();
+  //   }
+  // }
+
+  // 🔥 Escucha los cambios para iniciar o detener la animación dinámicamente
+  // @override
+  // void didUpdateWidget(covariant ShimmerBorderWrapper oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   if (widget.isAnimating != oldWidget.isAnimating) {
+  //     if (widget.isAnimating) {
+  //       _controller.repeat();
+  //     } else {
+  //       _controller.stop();
+  //       _controller.reset(); // si quieres que desaparezca al detenerse
+  //     }
+  //   }
+  // }

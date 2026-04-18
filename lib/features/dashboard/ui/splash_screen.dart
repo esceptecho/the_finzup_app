@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
-import 'package:the_finzup_app/features/dashboard/ui/app_colors.dart';
 import 'package:the_finzup_app/features/transactions/widgets/colorize_names_widget.dart';
+import 'package:the_finzup_app/finxup/theme/app_theme.dart';
+import 'package:the_finzup_app/widgets/shimmer_border_wrapper.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -13,40 +13,45 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              // gradient: RadialGradient(
-              //   colors: [AppColors.cardBgColor, AppColors.color0af0f0ff],
-              //   focal: Alignment.center,
-              // ),
-              borderRadius: BorderRadius.circular(15), // Sin bordes redondeados para un look moderno
-              border: Border.all(
-                color: AppColors.burgundyPrimary,
-                width: 0.5,
-                style: BorderStyle.solid,
-              ), // Borde sutil para destacar el contenedor
-            ),
-            // color: AppColors.backgroundDeep,
-          ),
-
           Center(
             child: Column(
               mainAxisSize: MainAxisSize
                   .min, // Importante: Reduce el Column al tamaño de sus hijos
               children: [
-                ColorizeNamesWidget(
-                  names: ['F I N Z U P'],
-                  colors: [
-                    AppColors.burgundyPrimary,
-                    AppColors.burgundyPrimary,
-                    AppColors.colorB58D67,
-                    AppColors.textHint,
-                  ],
-                  fontSize: 32,
+                ShimmerBorderWrapper(
+                  borderRadius: 20, // Coincide con el del Container
+                  strokeWidth: 2,
+                  isAnimating: true,
+                  repeat: false, // Bucle infinito
+                  shimmerColor: AppTheme.accentGold,
+                  child: ColorizeNamesWidget(
+                    names: ['F I N Z U P'],
+                    colors: [
+                      AppTheme.expenseRedDark,
+                      AppTheme.backgroundDeepRed,
+                      AppTheme.accentGoldBright,
+                      AppTheme.accentGoldMuted,
+                      AppTheme.accentDarkGoldMuted,
+                      AppTheme.expenseRedLight,
+                      AppTheme.expenseRedDark,
+                    ],
+                    fontSize: 32,
+                  ),
                 ),
               ],
             ),
           ),
+                    // Container(
+          //   decoration: BoxDecoration(
+          //     borderRadius: BorderRadius.circular(15), // Sin bordes redondeados para un look moderno
+          //     border: Border.all(
+          //       color: AppTheme.burgundyPrimary,
+          //       width: 0.5,
+          //       style: BorderStyle.solid,
+          //     ), // Borde sutil para destacar el contenedor
+          //   ),
+            // color: AppTheme.backgroundDeep,
+          // ),
         ],
       ),
     );
@@ -67,9 +72,9 @@ class SplashScreen extends StatelessWidget {
 //       children: [
 //         Container(
 //           decoration: BoxDecoration(
-//             gradient: RadialGradient(colors: [AppColors.iceWhite,AppColors.burgundyLight, AppColors.burgundyPrimary, ])
+//             gradient: RadialGradient(colors: [AppTheme.iceWhite,AppTheme.burgundyLight, AppTheme.burgundyPrimary, ])
 //           ),
-//           // color: AppColors.burgundyPrimary,
+//           // color: AppTheme.burgundyPrimary,
 //           ),
 
 //         Center(

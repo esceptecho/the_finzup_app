@@ -24,8 +24,28 @@ class ShimmerBalanceRing extends StatelessWidget {
         ? AppTheme.accentGold
         : AppTheme.expenseRed;
 
-    // 🔥 Condición para activar la animación
-    final bool shouldAnimateShimmer = totalBalance == 0;
+    // final bool shouldAnimateShimmer = totalBalance == 0;
+    // Color shimmerColor = AppTheme.textGrey;
+
+    // --- Lógica Reactiva ---
+
+    // 1. ¿Debe animarse? (En este caso, si el balance es 0 o negativo)
+    final bool shouldAnimate = totalBalance <= 0;
+
+    // 2. 🔥 Condición para activar la animación
+    // ¿Debe repetirse? (Solo en bucle si es exactamente 0, para llamar la atención)
+    // final bool shouldRepeat = totalBalance == 0;
+    final bool shouldRepeat = false;
+
+    // 3. Color dinámico del brillo
+    Color shimmerColor;
+    if (totalBalance == 0) {
+      shimmerColor = AppTheme.textGrey;
+    } else if (totalBalance < 0) {
+      shimmerColor = AppTheme.expenseRedDark;
+    } else {
+      shimmerColor = AppTheme.incomeGreenDark;
+    }
 
     return Stack(
       alignment: Alignment.center,
@@ -35,10 +55,10 @@ class ShimmerBalanceRing extends StatelessWidget {
           height: 250,
           // 🔥 Aquí implementamos el Wrapper reutilizable
           child: ShimmerBorderWrapper(
-            isAnimating: shouldAnimateShimmer,
+            isAnimating: shouldAnimate,
             isCircular: true,
-            repeat: true, // Bucle infinito
-            shimmerColor: AppTheme.accentGold,
+            repeat: shouldRepeat, // Bucle infinito
+            shimmerColor: shimmerColor, // AppTheme.accentGold,
             strokeWidth: 14, // Mismo grosor que tu CircularProgressIndicator
             child: TweenAnimationBuilder<double>(
               tween: Tween<double>(begin: 0, end: spentPercentage),

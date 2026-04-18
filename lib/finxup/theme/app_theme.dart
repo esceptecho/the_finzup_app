@@ -14,19 +14,25 @@ class AppTheme {
   // --- Nuevas Variaciones ---
 
   // Variaciones de Wine (Primario)
+  static const Color primaryWineDeepDark = Color(0xFF340309);
   static const Color primaryWineDark = Color(0xFF4A060E);
   static const Color primaryWineLight = Color(0xFF9B1B2B);
 
   // Variaciones de Gold (Acento)
+  static const Color accentDarkGoldMuted = Color(0xFF7C5628);
   static const Color accentGoldMuted = Color(0xFFAA8C2C);
   static const Color accentGoldBright = Color(0xFFFFD700);
 
   // Variaciones de Superficie/Fondo
   static const Color surfaceLighter = Color(0xFF2C2C2C);
   static const Color backgroundDeep = Color(0xFF0A0A0A);
+  static const Color backgroundRed = Color(0xFF5E0B12);
+  static const Color backgroundDeepRed = Color(0xFF46080D);
 
   // Variaciones de Estado (Income/Expense)
   static const Color incomeGreenDark = Color(0xFF349280);
+  static const Color incomeGreenDeepDark = Color(0xFF25544B);
+  static const Color incomeGreenDeeperDark = Color(0xFF1D3D37);
   static const Color incomeGreenLight = Color(0xFF76D7C4);
   static const Color expenseRedDark = Color(0xFF7A1423);
   static const Color expenseRedLight = Color(0xFFC63D4F);

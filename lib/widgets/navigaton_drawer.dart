@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_finzup_app/features/dashboard/ui/app_colors.dart';
 import 'package:the_finzup_app/features/dashboard/ui/dashboard_screen.dart';
-import 'package:the_finzup_app/features/dashboard/widgets/example/lib/presentation/samples/line/line_chart_sample1.dart';
 import 'package:the_finzup_app/features/transactions/widgets/dynamic_profile_screen.dart';
 import 'package:the_finzup_app/widgets/quick_note.dart';
 

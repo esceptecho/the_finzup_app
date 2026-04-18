@@ -46,7 +46,6 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
     'Única vez',
   ];
 
-
   // 2. Método para abrir el DatePicker
   void _presentDatePicker() async {
     final DateTime? pickedDate = await showDatePicker(
@@ -144,7 +143,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
                 ? Text(' ⬆⬇', style: TextStyle(fontSize: 24))
                 : SizedBox(
                     height: 45,
-                    
+
                     child: DropdownButton<String>(
                       value: _selectedRecurrence,
                       items: _recurrenceOptions.map((String value) {
@@ -219,11 +218,11 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
               TextButton.icon(
                 icon: const Icon(
                   Icons.calendar_month,
-                  color: AppTheme.incomeGreen,
+                  color: AppTheme.textGrey,
                 ),
                 label: const Text(
                   'Elegir Fecha',
-                  style: TextStyle(color: AppTheme.incomeGreenDark),
+                  style: TextStyle(color: AppTheme.textGrey),
                 ),
                 onPressed: _presentDatePicker,
               ),
@@ -254,7 +253,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
                 ChoiceChip(
                   label: const Text("Gasto"),
                   selected: _selectedCategory == TransactionCategory.expense,
-                  selectedColor: AppTheme.textWhite,
+                  selectedColor: AppTheme.expenseRedLight,
                   onSelected: (_) => setState(
                     () => _selectedCategory = TransactionCategory.expense,
                   ),
@@ -271,15 +270,20 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
               ],
             ),
 
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
 
           // Botón Guardar
           SizedBox(
             width: double.infinity,
-            child: ElevatedButton(
+            child: OutlinedButton(
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                backgroundColor: AppTheme.incomeGreenDark.withOpacity(0.5),
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                backgroundColor: AppTheme.textWhite.withValues(alpha: .8),
+                side: BorderSide(
+                  color: AppTheme.backgroundDeepRed, // Color del borde
+                  width: 4.0, // Ancho del borde
+                ),
+                fixedSize: const Size(0, 60),
               ),
               onPressed: () async {
                 final double? monto = double.tryParse(_amountController.text);
@@ -335,7 +339,11 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
               },
               child: Text(
                 "Guardar",
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: AppTheme.primaryWineDark,
+                  fontSize: 18,
+                  fontWeight: .bold,
+                ),
               ),
             ),
           ),

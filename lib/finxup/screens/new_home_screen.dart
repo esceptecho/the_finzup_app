@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:the_finzup_app/features/models/assets_image_list.dart';
 import 'package:the_finzup_app/features/models/fake_transactions.dart';
 import 'package:the_finzup_app/features/transactions/ui/transaction_screen.dart';
 import 'package:the_finzup_app/finxup/models/bill.dart';
@@ -20,8 +24,10 @@ import 'package:the_finzup_app/finxup/widgets/shimmer_balance_ring.dart';
 import 'package:the_finzup_app/finxup/widgets/slidable_item.dart';
 import 'package:the_finzup_app/finxup/widgets/transaction_card.dart';
 import 'package:the_finzup_app/widgets/navigaton_drawer.dart';
+import 'package:the_finzup_app/widgets/quick_note.dart';
 import 'package:the_finzup_app/widgets/shimmer_border_button.dart';
 import 'package:the_finzup_app/widgets/shimmer_border_wrapper.dart';
+import 'package:the_finzup_app/widgets/welcome_summary_card.dart';
 
 class NewHomeScreen extends StatefulWidget {
   const NewHomeScreen({super.key});
@@ -36,6 +42,29 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
   List<Goal> _myGoals = [];
   List<Bill> _bills = [];
   bool isPaid = false;
+  bool _welcomeSummaryCardShown = true;
+  bool isAnimating = false;
+  bool showInfo = false;
+  List<QuickNote> _notes = [];
+  final List<String> _imagePaths = assetPathList;
+
+  // Cargar notas de SharedPreferences
+  // Cambiamos "get notes" por "loadNotes()"
+  Future<void> _loadNotes() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final String? notesJson = prefs.getString('user_notes');
+
+      if (notesJson != null) {
+        final List<dynamic> decoded = jsonDecode(notesJson);
+        setState(() {
+          _notes = decoded.map((item) => QuickNote.fromMap(item)).toList();
+        });
+      }
+    } catch (e) {
+      print("Error cargando notas: $e");
+    }
+  }
 
   // 1. Obtener el total de ingresos
   double get _totalIncome {
@@ -69,6 +98,7 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
   void initState() {
     super.initState();
     _refreshAllData();
+    _loadNotes();
   }
 
   Future<void> _refreshAllData() async {
@@ -279,12 +309,43 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
     _refreshAllData(); // Refresca para ver la barra crecer
   }
 
+  final image = Image.asset('assets/buho-silueta1.jpg', fit: .scaleDown);
+
+  int _currentIndex = 0;
+  bool isExpanded = false;
+
+  String get currentNoteText {
+    if (_notes.isEmpty) return "Sin notas";
+    if (_currentIndex >= _notes.length) return _notes[0].text;
+    return _notes[_currentIndex].text;
+  }
+
+  void _changeImage() {
+    setState(() {
+      _currentIndex = (_currentIndex + 1) % _imagePaths.length;
+
+      // Si quieres que al cambiar se "cierre" la animación y se vuelva a abrir
+      // showInfo = false;
+    });
+  }
+
+  double get _imageSize =>
+      showInfo ? 340.0 : 0.0; // Usamos un getter para simplificar
+
+  void _showInformation() {
+    setState(() {
+      showInfo = !showInfo;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Obtenemos la ruta de la imagen actual basada en el índice
+    // final String currentImagePath = assetPathList[_currentIndex];
     return Scaffold(
       endDrawer: NavigatonDrawer(),
       appBar: AppBar(
-        bottom: PreferredSize(preferredSize: Size(12, 12), child: SizedBox()),
+        toolbarHeight: 70,
         leading: IconButton.filled(
           onPressed: () {
             Navigator.push(
@@ -300,10 +361,17 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
         ),
         backgroundColor: AppTheme.backgroundDeep,
         elevation: 0,
-        title: const Text(
-          'F I N Z U P',
-          style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryWineDark),
+        title: TextButton(
+          onPressed: () {
+            _changeImage();
+            _showInformation();
+          },
+          child: Text(
+            'F I N Z U P',
+            style: TextStyle(color: AppTheme.expenseRedDark),
+          ),
         ),
+
         actions: [
           GestureDetector(
             child: Hero(
@@ -341,6 +409,9 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
       ),
       body: CustomScrollView(
         slivers: [
+          SliverToBoxAdapter(
+            child: Container(height: 12, color: AppTheme.backgroundDeep),
+          ),
           // 1. Espaciado y Balance
           SliverToBoxAdapter(
             child: Stack(
@@ -348,72 +419,135 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                 ShimmerBorderWrapper(
                   borderRadius: 20, // Coincide con el del Container
                   strokeWidth: 2,
-                  isAnimating: true,
+                  isAnimating: isAnimating,
                   repeat: false, // Bucle infinito
-                  shimmerColor: AppTheme.accentGold,
+                  shimmerColor: AppTheme.incomeGreenDeeperDark,
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       color: AppTheme.backgroundDeep,
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Color(0xFF1A1A1A), // Base Neutral (Casi negro)
-                          AppTheme.primaryWineDark.withValues(
-                            alpha: 0.1,
-                          ), // Vino suave
-                          AppTheme.incomeGreenDark.withValues(
-                            alpha: 0.1,
-                          ), // Cian/Verde opaco
-                          AppTheme.accentGoldMuted.withValues(
-                            alpha: 0.1,
-                          ), // Toque dorado final
-                        ],
-                        stops: [0.1, 0.4, 0.7, 1.0],
-                      ),
+                      // gradient: LinearGradient(...),
                     ),
-                    child: Column(
+                    child: Stack(
                       children: [
-                        const SizedBox(height: 24),
-                        // NewBalanceRing(totalBalance: _calculatedBalance,spentPercentage: _spentPercentage,),
-                        ShimmerBalanceRing(
-                          totalBalance: _calculatedBalance,
-                          spentPercentage: _spentPercentage,
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ), // Espacio entre el anillo y la leyenda
-                        // NUEVA LEYENDA
-                        Row(
-                          mainAxisAlignment: .spaceBetween,
+                        Column(
                           children: [
-                            const BalanceLegend(),
-
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24.0,
+                            // if (showInfo)
+                            // La imagen que crece
+                            AnimatedContainer(
+                              decoration: BoxDecoration(
+                                borderRadius: .circular(15),
                               ),
-                              child: ShimmerBorderButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => StatisticsScreen(
-                                        transactions: _transactions,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: const Icon(
-                                  Icons.bar_chart_rounded,
-                                  color: AppTheme.accentGoldBright,
+                              duration: const Duration(milliseconds: 700),
+                              curve: Curves
+                                  .fastOutSlowIn, // Esta no genera valores negativos
+                              width: double.infinity,
+                              height: _imageSize,
+                              child: AnimatedOpacity(
+                                duration: const Duration(milliseconds: 500),
+                                opacity: showInfo
+                                    ? 0.3
+                                    : 0.1, // Se vuelve un poco transparente al ser pequeño
+                                child: Image.asset(
+                                  // currentImagePath,
+                                  _imagePaths[_currentIndex], // <--- Imagen dinámica
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                             ),
+
+                            // Texto moderno sobre la imagen (opcional)
+                            // if (_imageSize >
+                            //     80) // Solo mostrar si la imagen es grande
+                            const SizedBox(height: 24),
+                            ShimmerBalanceRing(
+                              totalBalance: _calculatedBalance,
+                              spentPercentage: _spentPercentage,
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ), // Espacio entre el anillo y la leyenda
+                            // NUEVA LEYENDA
+                            Row(
+                              mainAxisAlignment: .spaceBetween,
+                              children: [
+                                const BalanceLegend(),
+
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24.0,
+                                  ),
+                                  child: ShimmerBorderButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              StatisticsScreen(
+                                                transactions: _transactions,
+                                              ),
+                                        ),
+                                      );
+                                    },
+                                    child: const Icon(
+                                      Icons.bar_chart_rounded,
+                                      color: AppTheme.accentGoldBright,
+                                      size: 28.0,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
                           ],
                         ),
-                        const SizedBox(height: 12),
+                        // Texto de la nota sincronizado
+                        if (showInfo && _notes.isNotEmpty)
+                          Positioned(
+                            top: 180,
+                            left:
+                                0, // Importante: define left y right en 0 para que ocupe todo el ancho
+                            right: 0,
+                            child: AnimatedOpacity(
+                              duration: const Duration(milliseconds: 700),
+                              opacity: showInfo
+                                  ? 1.0
+                                  : 0.0, // Solo aparece cuando la imagen crece
+                              child: Container(
+                                height: 160,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 32,
+                                ),
+                                decoration: BoxDecoration(
+                                  // Un degradado se ve mucho más moderno que un bloque negro sólido
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Colors.transparent,
+                                      Colors.black.withValues(alpha: 
+                                        1.0,
+                                      ), // Negro con 70% opacidad
+                                    ],
+                                  ),
+                                ),
+
+                                child: Text(
+                                  currentNoteText, // <--- Nota dinámica
+                                  // "Ubicación del Positioned: Ahora es hijo directo del Stack, lo que permite usar bottom, left, right, etc.",
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize:
+                                        24, // Un poco más grande para legibilidad
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1.2,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -428,6 +562,49 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
           //     child: Divider(color: AppTheme.textDisabled.withValues(alpha: 0.4)),
           //   ),
           // ),
+          // 2. Separador
+          const SliverToBoxAdapter(child: SizedBox(height: 24)),
+
+          // 3. Tarjeta de Resumen (Condicional)
+          _welcomeSummaryCardShown
+              ? SliverToBoxAdapter(
+                  child: ShimmerBorderWrapper(
+                    borderRadius: 20, // Coincide con el del Container
+                    strokeWidth: 2,
+                    isAnimating: true,
+                    repeat: false, // Bucle infinito
+                    shimmerColor: AppTheme.accentGoldMuted,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        color: AppTheme.background,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        children: [
+                          WelcomeSummaryCard(
+                            userName: 'Arees',
+                            statusMessage:
+                                'Tienes {bills.length} facturas pendientes de revisión.',
+                            pendingAlerts: 3,
+                            onActionTap: () {
+                              setState(() {
+                                _welcomeSummaryCardShown = false;
+                              });
+                            },
+                            onTap: () {
+                              setState(() {
+                                _welcomeSummaryCardShown = false;
+                                Navigator.pushNamed(context, '/home');
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              : const SliverToBoxAdapter(child: SizedBox.shrink()),
           SliverToBoxAdapter(child: SizedBox(height: 8)),
           _myGoals.isNotEmpty
               ?
@@ -447,10 +624,10 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                   child: Container(
                     margin: const EdgeInsets.symmetric(
                       horizontal: 16,
-                      vertical: 8,
+                      vertical: 16,
                     ),
                     height: 180,
-                    color: AppTheme.surfaceLighter,
+                    color: AppTheme.surface,
                     child: Center(
                       child: Column(
                         children: [
@@ -518,7 +695,6 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
       ),
 
       floatingActionButton: FloatingActionButton(
-        backgroundColor: AppTheme.primaryWineDark,
         onPressed: () => _openAddTransactionModal(context),
         child: Icon(Icons.add, color: AppTheme.textWhite, size: 32),
       ),
@@ -576,3 +752,22 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
     );
   }
 }
+
+
+// gradient: LinearGradient(
+                      //   begin: Alignment.topLeft,
+                      //   end: Alignment.bottomRight,
+                      //   colors: [
+                      //     Color(0xFF1A1A1A), // Base Neutral (Casi negro)
+                      //     AppTheme.primaryWineDark.withValues(
+                      //       alpha: 0.1,
+                      //     ), // Vino suave
+                      //     AppTheme.incomeGreenDark.withValues(
+                      //       alpha: 0.1,
+                      //     ), // Cian/Verde opaco
+                      //     AppTheme.accentGoldMuted.withValues(
+                      //       alpha: 0.1,
+                      //     ), // Toque dorado final
+                      //   ],
+                      //   stops: [0.1, 0.4, 0.7, 1.0],
+                      // ),
