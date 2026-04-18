@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:the_finzup_app/features/dashboard/ui/home_pge.dart';
 import 'package:the_finzup_app/features/models/fake_transactions.dart';
 import 'package:the_finzup_app/features/transactions/ui/transaction_screen.dart';
 import 'package:the_finzup_app/finxup/models/bill.dart';
@@ -17,9 +16,12 @@ import 'package:the_finzup_app/finxup/widgets/category_selector.dart';
 import 'package:the_finzup_app/finxup/widgets/expenses_chart_card.dart';
 import 'package:the_finzup_app/finxup/widgets/goals_section.dart';
 import 'package:the_finzup_app/finxup/widgets/new_balance_ring.dart';
+import 'package:the_finzup_app/finxup/widgets/shimmer_balance_ring.dart';
 import 'package:the_finzup_app/finxup/widgets/slidable_item.dart';
 import 'package:the_finzup_app/finxup/widgets/transaction_card.dart';
 import 'package:the_finzup_app/widgets/navigaton_drawer.dart';
+import 'package:the_finzup_app/widgets/shimmer_border_button.dart';
+import 'package:the_finzup_app/widgets/shimmer_border_wrapper.dart';
 
 class NewHomeScreen extends StatefulWidget {
   const NewHomeScreen({super.key});
@@ -282,38 +284,46 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
     return Scaffold(
       endDrawer: NavigatonDrawer(),
       appBar: AppBar(
+        bottom: PreferredSize(preferredSize: Size(12, 12), child: SizedBox()),
         leading: IconButton.filled(
           onPressed: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                  // Aquí pasamos los datos mock que creamos antes
-                  builder: (context) =>
-                      TransactionGrid(transactions: mockTransactions),
-                ),
-              );
+              context,
+              MaterialPageRoute(
+                // Aquí pasamos los datos mock que creamos antes
+                builder: (context) =>
+                    TransactionGrid(transactions: mockTransactions),
+              ),
+            );
           },
           icon: Icon(Icons.compare_arrows_rounded),
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppTheme.backgroundDeep,
         elevation: 0,
         title: const Text(
-          'FINZUP',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          'F I N Z U P',
+          style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryWineDark),
         ),
         actions: [
           GestureDetector(
             child: Hero(
               tag: 'arees_profile',
-              child: CircleAvatar(
-                radius: 23,
-                backgroundColor: AppTheme.incomeGreenDark,
-                child: const CircleAvatar(
-                  radius: 21,
-                  backgroundColor: AppTheme.surface,
-                  backgroundImage: AssetImage(
-                    'assets/arees_profile.jpeg',
-                  ), // Asegúrate de tener esta imagen en pubspec.yaml
+              child: ShimmerBorderWrapper(
+                isCircular: true,
+                strokeWidth: 4, // Un grosor elegante para avatares
+                isAnimating: true, // Siempre activo
+                repeat: false, // Bucle infinito
+                shimmerColor: AppTheme.expenseRedLight,
+                child: CircleAvatar(
+                  radius: 23,
+                  backgroundColor: AppTheme.expenseRedDark,
+                  child: const CircleAvatar(
+                    radius: 21,
+                    backgroundColor: AppTheme.surface,
+                    backgroundImage: AssetImage(
+                      'assets/arees_profile.jpeg',
+                    ), // Asegúrate de tener esta imagen en pubspec.yaml
+                  ),
                 ),
               ),
             ),
@@ -335,97 +345,89 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
           SliverToBoxAdapter(
             child: Stack(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: AppTheme.backgroundDeep,
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Color(0xFF1A1A1A), // Base Neutral (Casi negro)
-                        AppTheme.primaryWineDark.withValues(alpha: 0.1), // Vino suave
-                        AppTheme.incomeGreenDark.withValues(alpha: 0.1), // Cian/Verde opaco
-                        AppTheme.accentGoldMuted.withValues(alpha: 0.1), // Toque dorado final
-                      ],
-                      stops: [0.1, 0.4, 0.7, 1.0],
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 24),
-                      NewBalanceRing(
-                        totalBalance: _calculatedBalance,
-                        spentPercentage: _spentPercentage,
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ), // Espacio entre el anillo y la leyenda
-                      // NUEVA LEYENDA
-                      Row(
-                        mainAxisAlignment: .spaceBetween,
-                        children: [
-                          const BalanceLegend(),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 24.0,
-                            ),
-                            child: OutlinedButton.icon(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => StatisticsScreen(
-                                      transactions: _transactions,
-                                    ),
-                                  ),
-                                );
-                              },
-                              label: const Icon(
-                                Icons
-                                    .bar_chart_rounded, // Icono redondeado para un look más moderno
-                                size: 20,
-                                color: AppTheme
-                                    .textWhite, // Usamos el color de acento para que resalte sutilmente
-                              ),
-                              style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 12,
-                                ),
-                                side: BorderSide(
-                                  color: AppTheme.accentGoldBright.withOpacity(
-                                    0.6,
-                                  ), // El "borde fino" y sutil
-                                  width: 1,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    16,
-                                  ), // Bordes suavizados
-                                ),
-                                backgroundColor: AppTheme.surface.withOpacity(
-                                  0.4,
-                                ), // Un fondo leve para dar profundidad
-                              ),
-                            ),
-                          ),
+                ShimmerBorderWrapper(
+                  borderRadius: 20, // Coincide con el del Container
+                  strokeWidth: 2,
+                  isAnimating: true,
+                  repeat: false, // Bucle infinito
+                  shimmerColor: AppTheme.accentGold,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: AppTheme.backgroundDeep,
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color(0xFF1A1A1A), // Base Neutral (Casi negro)
+                          AppTheme.primaryWineDark.withValues(
+                            alpha: 0.1,
+                          ), // Vino suave
+                          AppTheme.incomeGreenDark.withValues(
+                            alpha: 0.1,
+                          ), // Cian/Verde opaco
+                          AppTheme.accentGoldMuted.withValues(
+                            alpha: 0.1,
+                          ), // Toque dorado final
                         ],
+                        stops: [0.1, 0.4, 0.7, 1.0],
                       ),
-                      const SizedBox(height: 12),
-                    ],
+                    ),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 24),
+                        // NewBalanceRing(totalBalance: _calculatedBalance,spentPercentage: _spentPercentage,),
+                        ShimmerBalanceRing(
+                          totalBalance: _calculatedBalance,
+                          spentPercentage: _spentPercentage,
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ), // Espacio entre el anillo y la leyenda
+                        // NUEVA LEYENDA
+                        Row(
+                          mainAxisAlignment: .spaceBetween,
+                          children: [
+                            const BalanceLegend(),
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 24.0,
+                              ),
+                              child: ShimmerBorderButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => StatisticsScreen(
+                                        transactions: _transactions,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: const Icon(
+                                  Icons.bar_chart_rounded,
+                                  color: AppTheme.accentGoldBright,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
           ),
+
           // SliverToBoxAdapter(
           //   child: SizedBox(
           //     height: 16,
-          //     child: Divider(color: AppTheme.textDisabled.withOpacity(0.4)),
+          //     child: Divider(color: AppTheme.textDisabled.withValues(alpha: 0.4)),
           //   ),
           // ),
-
           SliverToBoxAdapter(child: SizedBox(height: 8)),
           _myGoals.isNotEmpty
               ?
@@ -485,7 +487,7 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
             child: Column(
               children: [
                 // _myGoals.isNotEmpty
-                  const SizedBox(height: 24),
+                const SizedBox(height: 24),
                 CategorySelector(
                   showTransactions: _isShowingTransactions,
                   onChanged: (val) {
@@ -574,7 +576,3 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
     );
   }
 }
-
-
-
-

@@ -1,0 +1,91 @@
+import 'package:flutter/material.dart';
+import 'package:the_finzup_app/finxup/theme/app_theme.dart';
+import 'package:the_finzup_app/widgets/shimmer_border_wrapper.dart';
+
+class ShimmerBalanceRing extends StatelessWidget {
+  final double spentPercentage;
+  final double totalBalance;
+
+  const ShimmerBalanceRing({
+    super.key,
+    required this.spentPercentage,
+    required this.totalBalance,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final Color progressColor = totalBalance < 0 || spentPercentage > 0.8
+        ? AppTheme.expenseRed
+        : AppTheme.primaryWine;
+
+    final Color trackColor = totalBalance == 0
+        ? Colors.white10
+        : totalBalance > 0
+        ? AppTheme.accentGold
+        : AppTheme.expenseRed;
+
+    // 🔥 Condición para activar la animación
+    final bool shouldAnimateShimmer = totalBalance == 0;
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        SizedBox(
+          width: 250,
+          height: 250,
+          // 🔥 Aquí implementamos el Wrapper reutilizable
+          child: ShimmerBorderWrapper(
+            isAnimating: shouldAnimateShimmer,
+            isCircular: true,
+            repeat: true, // Bucle infinito
+            shimmerColor: AppTheme.accentGold,
+            strokeWidth: 14, // Mismo grosor que tu CircularProgressIndicator
+            child: TweenAnimationBuilder<double>(
+              tween: Tween<double>(begin: 0, end: spentPercentage),
+              duration: const Duration(seconds: 2),
+              curve: Curves.easeOutCubic,
+              builder: (context, value, child) {
+                return CircularProgressIndicator(
+                  value: value,
+                  strokeWidth: 14,
+                  backgroundColor: trackColor,
+                  color: progressColor,
+                  strokeCap: StrokeCap.round,
+                );
+              },
+            ),
+          ),
+        ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Balance',
+              style: TextStyle(color: Colors.white70, fontSize: 20),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '\$${totalBalance.toStringAsFixed(2).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
+              style: const TextStyle(
+                color: Colors.white, // Asumiendo AppTheme.textWhite
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
+              maxLines: 1,
+              softWrap: true,
+              overflow: TextOverflow
+                  .fade, // 🔥 Corregí un pequeño error tipográfico aquí (.fade a TextOverflow.fade)
+            ),
+            Text(
+              "${(spentPercentage * 100).toInt()}% gastado",
+              style: const TextStyle(
+                color: Colors.grey,
+                fontSize: 13,
+              ), // Asumiendo AppTheme.textGrey
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}

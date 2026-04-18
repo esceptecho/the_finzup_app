@@ -24,7 +24,7 @@ class NewBalanceRing extends StatelessWidget {
         : totalBalance > 0
         ? AppTheme.accentGold
         : AppTheme
-              .expenseRed; // Si el balance es cero, el track es dorado, sino un gris claro.
+              .expenseRed; // Si el balance es cero, el track es dorado, sino un gris claro. 
 
     return Stack(
       alignment: Alignment.center,
