@@ -37,7 +37,6 @@ class WelcomeSummaryCard extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
-
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,15 +44,18 @@ class WelcomeSummaryCard extends StatelessWidget {
           // Sección Superior: Avatar y Saludo
           Row(
             children: [
-              CircleAvatar(
-                radius: 24,
-                backgroundColor: Colors.white.withOpacity(0.2),
-                child: const Icon(
-                  Icons.update_outlined,
-                  color: Colors.white,
-                  size: 28,
+              InkWell(
+                onTap: onTap,
+                child: CircleAvatar(
+                  radius: 24,
+                  backgroundColor: Colors.white.withOpacity(0.2),
+                  child: const Icon(
+                    Icons.update_outlined,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+                  // Si tienes foto de perfil usa: backgroundImage: NetworkImage('url'),
                 ),
-                // Si tienes foto de perfil usa: backgroundImage: NetworkImage('url'),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -81,21 +83,17 @@ class WelcomeSummaryCard extends StatelessWidget {
                 ),
               ),
               if (onActionTap != null)
-              InkWell(
-                    onTap: onActionTap,
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.close,
-                        size: 14,
-                        color: Colors.blue[900],
-                      ),
+                InkWell(
+                  onTap: onActionTap,
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
                     ),
+                    child: Icon(Icons.close, size: 14, color: Colors.blue[900]),
                   ),
+                ),
             ],
           ),
 

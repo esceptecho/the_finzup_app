@@ -10,7 +10,7 @@ import 'package:the_finzup_app/finxup/screens/new_home_screen.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized(); 
 
   // ESTA ES LA LÍNEA QUE FALTA:
   await initializeDateFormatting('es_ES', null);

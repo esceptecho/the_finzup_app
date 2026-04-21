@@ -20,7 +20,7 @@ class ShimmerBorderButton extends StatelessWidget {
         isAnimating: true,
         repeat: false, // Se mantiene animando siempre
         shimmerColor: AppTheme.accentGold,
-        strokeWidth: 2,
+        strokeWidth: 1,
         borderRadius: 16, // Debe coincidir con el BorderRadius del Container
         isCircular: false, // Es un botón rectangular con bordes redondeados
         child: Container(

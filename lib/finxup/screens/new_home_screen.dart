@@ -14,12 +14,10 @@ import 'package:the_finzup_app/finxup/theme/app_theme.dart';
 import 'package:the_finzup_app/finxup/widgets/add_goal_form.dart';
 import 'package:the_finzup_app/finxup/widgets/add_transaction_form.dart';
 import 'package:the_finzup_app/finxup/widgets/balance_legend.dart';
-// import 'package:the_finzup_app/finxup/widgets/balance_ring.dart';
 import 'package:the_finzup_app/finxup/widgets/bill_card.dart';
 import 'package:the_finzup_app/finxup/widgets/category_selector.dart';
 import 'package:the_finzup_app/finxup/widgets/expenses_chart_card.dart';
 import 'package:the_finzup_app/finxup/widgets/goals_section.dart';
-import 'package:the_finzup_app/finxup/widgets/new_balance_ring.dart';
 import 'package:the_finzup_app/finxup/widgets/shimmer_balance_ring.dart';
 import 'package:the_finzup_app/finxup/widgets/slidable_item.dart';
 import 'package:the_finzup_app/finxup/widgets/transaction_card.dart';
@@ -258,7 +256,7 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
   }
 
   void _showAddMoneyDialog(Goal goal) {
-    final TextEditingController _amountController = TextEditingController();
+    final TextEditingController amountController = TextEditingController();
 
     showDialog(
       context: context,
@@ -269,7 +267,7 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
           style: const TextStyle(color: Colors.white),
         ),
         content: TextField(
-          controller: _amountController,
+          controller: amountController,
           keyboardType: TextInputType.number,
           decoration: const InputDecoration(labelText: "Monto a ahorrar"),
           style: const TextStyle(color: Colors.white),
@@ -281,7 +279,7 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              final monto = double.tryParse(_amountController.text);
+              final monto = double.tryParse(amountController.text);
               if (monto != null) {
                 _addMoneyToGoal(goal, monto); // <--- AQUÍ USAS TU MÉTODO
                 Navigator.pop(context);
@@ -409,9 +407,7 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
       ),
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(
-            child: Container(height: 12, color: AppTheme.backgroundDeep),
-          ),
+          SliverToBoxAdapter(child: Container(color: AppTheme.backgroundDeep)),
           // 1. Espaciado y Balance
           SliverToBoxAdapter(
             child: Stack(
@@ -419,7 +415,7 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                 ShimmerBorderWrapper(
                   borderRadius: 20, // Coincide con el del Container
                   strokeWidth: 2,
-                  isAnimating: isAnimating,
+                  isAnimating: true, //isAnimating,
                   repeat: false, // Bucle infinito
                   shimmerColor: AppTheme.incomeGreenDeeperDark,
                   child: Container(
@@ -455,23 +451,33 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                                 ),
                               ),
                             ),
-
-                            // Texto moderno sobre la imagen (opcional)
-                            // if (_imageSize >
-                            //     80) // Solo mostrar si la imagen es grande
-                            const SizedBox(height: 24),
-                            ShimmerBalanceRing(
-                              totalBalance: _calculatedBalance,
-                              spentPercentage: _spentPercentage,
+                            const SizedBox(height: 12),
+                            SizedBox(
+                              height: 200,
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: ShimmerBalanceRing(
+                                  totalBalance: _calculatedBalance,
+                                  spentPercentage: _spentPercentage,
+                                ),
+                              ),
                             ),
                             const SizedBox(
-                              height: 8,
+                              height: 16,
                             ), // Espacio entre el anillo y la leyenda
                             // NUEVA LEYENDA
                             Row(
                               mainAxisAlignment: .spaceBetween,
                               children: [
-                                const BalanceLegend(),
+                                ShimmerBorderWrapper(
+                                  borderRadius:
+                                      20, // Coincide con el del Container
+                                  strokeWidth: 0.3,
+                                  isAnimating: true,
+                                  repeat: false, // Bucle infinito
+                                  shimmerColor: AppTheme.accentGoldMuted,
+                                  child: const BalanceLegend(),
+                                ),
 
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -526,8 +532,8 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                                     end: Alignment.bottomCenter,
                                     colors: [
                                       Colors.transparent,
-                                      Colors.black.withValues(alpha: 
-                                        1.0,
+                                      Colors.black.withValues(
+                                        alpha: 1.0,
                                       ), // Negro con 70% opacidad
                                     ],
                                   ),
@@ -570,7 +576,7 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
               ? SliverToBoxAdapter(
                   child: ShimmerBorderWrapper(
                     borderRadius: 20, // Coincide con el del Container
-                    strokeWidth: 2,
+                    strokeWidth: 1,
                     isAnimating: true,
                     repeat: false, // Bucle infinito
                     shimmerColor: AppTheme.accentGoldMuted,
@@ -585,7 +591,7 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                           WelcomeSummaryCard(
                             userName: 'Arees',
                             statusMessage:
-                                'Tienes {bills.length} facturas pendientes de revisión.',
+                                'Tienes ${_bills.length} facturas para revisar.',
                             pendingAlerts: 3,
                             onActionTap: () {
                               setState(() {
